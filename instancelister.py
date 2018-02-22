@@ -15,9 +15,24 @@ for region in response['Regions']:
         for i in r['Instances']:
              #print(i)
              #
-             # TODO - print a few interesting fields, and also get at TAGs
-             #
-             print('   ' + i['InstanceId'])
+             # Tags take a bit of effort since they are an array of objects
+             # but we should be putting a human readable description in the Name tag
+             # so it's likely worth getting for display
+	     instanceName = ''
+             if 'Tags' in i.keys():
+                 for tags in i['Tags']:
+                     if tags['Key'] == 'Name':
+                         instanceName = tags['Value']
+
+	     oString = '    {}  ({})  {}'
+	     
+             print(oString.format(
+                 i['InstanceId'], 
+                 i['State']['Name'],
+		 instanceName
+		 )
+	     )
+
 
 
 
